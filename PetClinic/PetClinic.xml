@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PetClinic</name>
+    </assembly>
+    <members>
+        <member name="M:PetClinic.Data.PetClinicDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+             <summary>
+            
+             </summary>
+             <param name="modelBuilder"></param>
+        </member>
+    </members>
+</doc>

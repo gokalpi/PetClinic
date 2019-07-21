@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PetClinic.Data;
+using PetClinic.Helpers;
 
 namespace PetClinic
 {
@@ -19,7 +21,7 @@ namespace PetClinic
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -28,6 +30,8 @@ namespace PetClinic
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseSwaggerDocumentation();
 
             app.UseMvc(routes =>
             {
@@ -46,12 +50,14 @@ namespace PetClinic
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void ConfigureDevelopment(IApplicationBuilder app, IHostingEnvironment env)
+        public void ConfigureDevelopment(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseSwaggerDocumentation();
 
             app.UseMvc(routes =>
             {
@@ -76,6 +82,8 @@ namespace PetClinic
             //services.AddDbContext<PetClinicDbContext>(options => options.UseInMemoryDatabase("PetClinicDb"));
             services.AddDbContext<PetClinicDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddAutoMapper();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the Angular files will be served from this directory
@@ -83,6 +91,8 @@ namespace PetClinic
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddSwaggerDocumentation();
         }
 
         // This method gets called by the production runtime.
@@ -91,6 +101,8 @@ namespace PetClinic
             services.AddDbContext<PetClinicDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddAutoMapper();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the Angular files will be served from this directory
@@ -98,6 +110,8 @@ namespace PetClinic
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddSwaggerDocumentation();
         }
     }
 }

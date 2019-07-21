@@ -10,7 +10,7 @@ using PetClinic.Data;
 namespace PetClinic.Data.Migrations
 {
     [DbContext(typeof(PetClinicDbContext))]
-    [Migration("20190707162652_InitialCreate")]
+    [Migration("20190721190230_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,15 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 using PetClinic.Models;
 using System;
-using System.Collections.Generic;
 
 namespace PetClinic.Data
 {
     public class PetClinicDbContext : DbContext
     {
-        public PetClinicDbContext(DbContextOptions options) : base(options)
+        private readonly IConfiguration _config;
+
+        public PetClinicDbContext(DbContextOptions options, IConfiguration config) : base(options)
         {
+            _config = config;
         }
 
         public DbSet<Owner> Owners { get; set; }
@@ -18,12 +21,19 @@ namespace PetClinic.Data
         public DbSet<Vet> Vets { get; set; }
         public DbSet<Visit> Visits { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
+        }
+
         /// <summary>
         ///
         /// </summary>
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region Data Model Generation
+
             modelBuilder.Entity<Owner>(b =>
             {
                 b.Property<int>("Id")
@@ -139,6 +149,8 @@ namespace PetClinic.Data
 
                 b.ToTable("Visits");
             });
+
+            #endregion Data Model Generation
 
             #region Data Generation
 
